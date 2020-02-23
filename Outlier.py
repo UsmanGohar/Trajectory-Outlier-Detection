@@ -17,7 +17,8 @@ gmap.apikey = 'AIzaSyCul2f2Ao1xZ6_Lo3SdtxR-LuBeQjSysYw'
 
 path = 'C:\\Users\\User\\Downloads\\T-drive Taxi Trajectories\\release\\taxi_log_2008_by_id\\*.txt'
 
-def distance(lat1, lon1, lat2, lon2):  #Function to determine distance between Geo-coordinates
+
+def distance(lat1, lon1, lat2, lon2):  #Function to calculate distance between two pairs of Geo-coordinates using Haversine Approximation
 
     R = 6373.0
 
@@ -37,7 +38,7 @@ def distance(lat1, lon1, lat2, lon2):  #Function to determine distance between G
     return distance*1000
 
 
-def window(cur_day, cur_hour, cur_endtime):
+def window(cur_day, cur_hour, cur_endtime):  #Function for windowing through the dataset
 
     files = glob.glob(path)
     DBt = defaultdict(list)
@@ -46,7 +47,7 @@ def window(cur_day, cur_hour, cur_endtime):
     
     for file in files:
         
-        if i == 500:         # CHANGE NUMBER OF FILES HERE!!!! (Temporary)
+        if i == 500:         # CHANGE NUMBER OF FILES HERE!!!! (An error with one of the files so skipping)
             break
         i = i+1
         
@@ -80,7 +81,7 @@ def window(cur_day, cur_hour, cur_endtime):
     return DBt
 
 
-def fill_gaps(DBt, cur_endtime):
+def fill_gaps(DBt, cur_endtime):  #Preprocessing to remove gaps between inconsistent sampling
 
     missing = list(map(str,range( int(cur_endtime) - 14, int(cur_endtime) + 1 )))
     #print(missing)
